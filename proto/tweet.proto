@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package tweet;
+option go_package=".;tweetpb";
+
+message SendTweetRequest {
+	string AccessToken = 1;
+	string AccessSecret = 2;
+	string TweetContent = 3;
+}
+
+message SendTweetResponse {
+	bool IsSuccess = 1;
+}
+
+message LoginRequest {
+}
+
+message LoginResponse {
+	string RequestToken = 1;
+	string AuthUrl = 2;
+	string ErrorStr = 3;
+}
+
+message ReceivePINRequest {
+	string RequestToken = 1;
+	string verifier = 2;
+}
+
+message ReceivePINResponse {
+	string AccessToken = 1;
+	string AccessSecret = 2;
+	string ErrorStr = 3;
+}
+
+service OAuthService{
+	rpc Login(LoginRequest) returns (LoginResponse){}
+	rpc ReceivePIN(ReceivePINRequest) returns (ReceivePINResponse){}
+}
+
+service TweetService{
+	rpc SendTweet(SendTweetRequest) returns (SendTweetResponse){}
+}

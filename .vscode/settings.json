@@ -1,0 +1,7 @@
+{
+	"go.inferGopath": false,
+	"go.installDependenciesWhenBuilding": true,
+	"go.alternateTools": {
+	
+	}
+}

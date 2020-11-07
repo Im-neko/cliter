@@ -1,0 +1,11 @@
+.DS_Store
+.envrc
+*.log
+*.swp
+*.key
+*.secret
+secrets.txt
+pkg/*
+.vscode/launch.json
+api/api
+cmd/cmd
