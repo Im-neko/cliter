@@ -9,5 +9,12 @@ proto:
 			--go-grpc_out=./proto; \
 	done
 
+docker-build:
+	docker build -t cliter -f api/Dockerfile .;\
+	docker tag cliter gcr.io/voltaic-quest-176113/cliter:latest 
+
+docker-push:
+	docker push gcr.io/voltaic-quest-176113/cliter:latest 
+
 clean:
 	rm -rf proto/*.pb.go

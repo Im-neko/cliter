@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/im-neko/cliter/cmd/oauth"
+	"github.com/im-neko/cliter/logger"
 
 	pb "github.com/im-neko/cliter/proto"
 	"github.com/spf13/cobra"
@@ -28,16 +29,22 @@ var (
 	rootCmd       = &cobra.Command{
 		Use:   "cliter [TweetContent]",
 		Short: "Tweet from cli Command",
-		Long:  `You can tweet from cli with cliter command`,
+		Long: `You can tweet from cli with cliter command
+Example: 
+  cliter "Hello Twitter" -- When the tweet contains space, please wrap with double quote
+  cliter "line1" line2 "line3" -- To Tweet multiline, please join these line with spacee
+`,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("%d", len(args))
+			if len(args) < 1 {
+				fmt.Printf("No tweet text.\nTo tweet \"Hello Twitter\", Enter a command that like: cliter \"Hello Twitter\" ")
+				return
+			}
 			msg := strings.Join(args[:], "\n")
 			twiReq := &pb.SendTweetRequest{
 				AccessToken:  oauth.AuthInfo.AccessToken,
 				AccessSecret: oauth.AuthInfo.AccessSecret,
 				TweetContent: msg,
 			}
-			fmt.Printf("Req: %v", twiReq)
 			twiRes, err := twitterClient.SendTweet(ctx, twiReq)
 			if err != nil {
 				log.Fatalf("Failed to Tweet: %v", err)
@@ -58,15 +65,19 @@ func init() {
 	config := &tls.Config{
 		InsecureSkipVerify: true,
 	}
-	conn, err := grpc.DialContext(ctx, "cliter.im-neko.dev:443", grpc.WithTransportCredentials(credentials.NewTLS(config)))
+	conn, err := grpc.DialContext(
+		ctx,
+		"cliter.im-neko.net:443",
+		grpc.WithTransportCredentials(credentials.NewTLS(config)),
+	)
 	if err != nil {
-		log.Fatalf("Could not connect: %v", err)
+		logger.Error("Could not connect: %v", err)
 	}
 
 	if oauth.IsNeedOAuth {
 		err = oauth.StartOAuth(ctx, conn)
 		if err != nil {
-			log.Fatalf("Failed to OAuth: %v", err)
+			logger.Error("Failed to OAuth: %v", err)
 		}
 	}
 	// Create Client

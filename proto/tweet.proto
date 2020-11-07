@@ -33,11 +33,21 @@ message ReceivePINResponse {
 	string ErrorStr = 3;
 }
 
+message EchoRequest {
+	string message = 1;
+}
+
+message EchoResponse {
+	string message = 1;
+}
+
 service OAuthService{
+	rpc Echo(EchoRequest) returns (EchoResponse){}
 	rpc Login(LoginRequest) returns (LoginResponse){}
 	rpc ReceivePIN(ReceivePINRequest) returns (ReceivePINResponse){}
 }
 
 service TweetService{
+	rpc Echo(EchoRequest) returns (EchoResponse){}
 	rpc SendTweet(SendTweetRequest) returns (SendTweetResponse){}
 }

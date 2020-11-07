@@ -17,6 +17,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OAuthServiceClient interface {
+	Echo(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	ReceivePIN(ctx context.Context, in *ReceivePINRequest, opts ...grpc.CallOption) (*ReceivePINResponse, error)
 }
@@ -27,6 +28,15 @@ type oAuthServiceClient struct {
 
 func NewOAuthServiceClient(cc grpc.ClientConnInterface) OAuthServiceClient {
 	return &oAuthServiceClient{cc}
+}
+
+func (c *oAuthServiceClient) Echo(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error) {
+	out := new(EchoResponse)
+	err := c.cc.Invoke(ctx, "/tweet.OAuthService/Echo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *oAuthServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
@@ -51,6 +61,7 @@ func (c *oAuthServiceClient) ReceivePIN(ctx context.Context, in *ReceivePINReque
 // All implementations must embed UnimplementedOAuthServiceServer
 // for forward compatibility
 type OAuthServiceServer interface {
+	Echo(context.Context, *EchoRequest) (*EchoResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	ReceivePIN(context.Context, *ReceivePINRequest) (*ReceivePINResponse, error)
 	mustEmbedUnimplementedOAuthServiceServer()
@@ -60,6 +71,9 @@ type OAuthServiceServer interface {
 type UnimplementedOAuthServiceServer struct {
 }
 
+func (UnimplementedOAuthServiceServer) Echo(context.Context, *EchoRequest) (*EchoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Echo not implemented")
+}
 func (UnimplementedOAuthServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
@@ -77,6 +91,24 @@ type UnsafeOAuthServiceServer interface {
 
 func RegisterOAuthServiceServer(s grpc.ServiceRegistrar, srv OAuthServiceServer) {
 	s.RegisterService(&_OAuthService_serviceDesc, srv)
+}
+
+func _OAuthService_Echo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EchoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OAuthServiceServer).Echo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/tweet.OAuthService/Echo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OAuthServiceServer).Echo(ctx, req.(*EchoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _OAuthService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -120,6 +152,10 @@ var _OAuthService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*OAuthServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "Echo",
+			Handler:    _OAuthService_Echo_Handler,
+		},
+		{
 			MethodName: "Login",
 			Handler:    _OAuthService_Login_Handler,
 		},
@@ -136,6 +172,7 @@ var _OAuthService_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TweetServiceClient interface {
+	Echo(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error)
 	SendTweet(ctx context.Context, in *SendTweetRequest, opts ...grpc.CallOption) (*SendTweetResponse, error)
 }
 
@@ -145,6 +182,15 @@ type tweetServiceClient struct {
 
 func NewTweetServiceClient(cc grpc.ClientConnInterface) TweetServiceClient {
 	return &tweetServiceClient{cc}
+}
+
+func (c *tweetServiceClient) Echo(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error) {
+	out := new(EchoResponse)
+	err := c.cc.Invoke(ctx, "/tweet.TweetService/Echo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *tweetServiceClient) SendTweet(ctx context.Context, in *SendTweetRequest, opts ...grpc.CallOption) (*SendTweetResponse, error) {
@@ -160,6 +206,7 @@ func (c *tweetServiceClient) SendTweet(ctx context.Context, in *SendTweetRequest
 // All implementations must embed UnimplementedTweetServiceServer
 // for forward compatibility
 type TweetServiceServer interface {
+	Echo(context.Context, *EchoRequest) (*EchoResponse, error)
 	SendTweet(context.Context, *SendTweetRequest) (*SendTweetResponse, error)
 	mustEmbedUnimplementedTweetServiceServer()
 }
@@ -168,6 +215,9 @@ type TweetServiceServer interface {
 type UnimplementedTweetServiceServer struct {
 }
 
+func (UnimplementedTweetServiceServer) Echo(context.Context, *EchoRequest) (*EchoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Echo not implemented")
+}
 func (UnimplementedTweetServiceServer) SendTweet(context.Context, *SendTweetRequest) (*SendTweetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendTweet not implemented")
 }
@@ -182,6 +232,24 @@ type UnsafeTweetServiceServer interface {
 
 func RegisterTweetServiceServer(s grpc.ServiceRegistrar, srv TweetServiceServer) {
 	s.RegisterService(&_TweetService_serviceDesc, srv)
+}
+
+func _TweetService_Echo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EchoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TweetServiceServer).Echo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/tweet.TweetService/Echo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TweetServiceServer).Echo(ctx, req.(*EchoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _TweetService_SendTweet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -206,6 +274,10 @@ var _TweetService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "tweet.TweetService",
 	HandlerType: (*TweetServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Echo",
+			Handler:    _TweetService_Echo_Handler,
+		},
 		{
 			MethodName: "SendTweet",
 			Handler:    _TweetService_SendTweet_Handler,
