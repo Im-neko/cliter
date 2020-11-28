@@ -1,0 +1,7 @@
+apiVersion: v3
+name: cliter
+version: 1.0.0
+AppVersion: latest
+description: Simple twitter client server
+type: application
+engine: gotpl

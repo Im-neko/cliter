@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ .Values.name }}
+spec:
+  host: {{ .Values.name }}
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100

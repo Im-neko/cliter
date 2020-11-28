@@ -1,0 +1,29 @@
+replicaCount: 1
+
+image:
+  repo: gcr.io/voltaic-quest-176113/cliter
+  tag: latest
+  imagePullPolicy: Always
+
+
+imagePullSecret: gcr-json-key
+
+name: cliter
+
+hostname: 
+  - "cliter.im-neko.net"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 50051
+
+resources: 
+  limits:
+    cpu: 100m
+    memory: 100Mi
+  requests:
+    cpu: 100m
+    memory: 100Mi
+
+
