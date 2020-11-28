@@ -1,6 +1,7 @@
 # cliter
 CLI Simple Twitter Client
-- Tweet Only
+- Tweet Only  
+![demo](https://im-neko.dev/assets/cliter-demo.gif)
  
 ## How to install
 `brew tap im-neko/tap`  
