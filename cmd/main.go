@@ -63,7 +63,7 @@ func init() {
 	baseCtx := context.Background()
 	ctx, cancel = context.WithCancel(baseCtx)
 	config := &tls.Config{
-		InsecureSkipVerify: true,
+    ServerName: "cliter.im-neko.net",
 	}
 	conn, err := grpc.DialContext(
 		ctx,
