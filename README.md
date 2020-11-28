@@ -1,5 +1,20 @@
 # cliter
-CLI Twitter Client
+CLI Simple Twitter Client
+- Tweet Only
+ 
+## How to install
+`brew tap im-neko/tap`  
+`brew install im-neko/tap/cliterk`
+
+## How to use
+### Simple Tweet 
+`cliter HelloTwitter`
+
+### Multiline Tweet
+`cliter Hello Twitter`
+
+### Tweet which includes spaces
+`cliter "Hello Twitter"`
 
 # Requirements
 Twitter ConsumerKey/Secret
