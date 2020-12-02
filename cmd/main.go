@@ -36,7 +36,7 @@ Example:
 `,
 		Run: func(cmd *cobra.Command, args []string) {
 			if len(args) < 1 {
-				fmt.Printf("No tweet text.\nTo tweet \"Hello Twitter\", Enter a command that like: cliter \"Hello Twitter\" ")
+				fmt.Printf("No tweet text.\nTo tweet \"Hello Twitter\", Enter a command which like: cliter \"Hello Twitter\" ")
 				return
 			}
 			msg := strings.Join(args[:], "\n")

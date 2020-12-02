@@ -19,10 +19,10 @@ type AccessInfo struct {
 	AccessSecret string `json:"as,string"`
 }
 
-const (
+var (
 	// AccessFileName is AccessFileName
 	// TODO: Ecnrypt
-	AccessFileName = "secrets.txt"
+	AccessFileName = os.ExpandEnv("$HOME/.cliter.token")
 )
 
 var (
